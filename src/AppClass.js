@@ -3,6 +3,7 @@ import "./App.css";
 // import Radium, { StyleRoot } from "radium";
 // import styled from "styled-components";
 import Person from "./Person/Person";
+// import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
 // const StyledButton = styled.button`
 //         font: inherit,
@@ -20,9 +21,9 @@ import Person from "./Person/Person";
 class AppClass extends Component {
   state = {
     persons: [
-      { id: "rtb1", name: "Maximilian", age: "28" },
-      { id: "hfdn2", name: "Manu", age: "21" },
-      { id: "nfegt3", name: "Steph", age: "31" }
+      { id: "rtb", name: "Maximilian", age: "28" },
+      { id: "hfdn", name: "Manu", age: "21" },
+      { id: "nfegt", name: "Steph", age: "31" }
     ],
     otherState: "some other value",
     showPersons: false
@@ -41,18 +42,28 @@ class AppClass extends Component {
 
   nameChangedHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => {
-      // person's-id === agr id
+      // person's-id === arg id
+      console.log(p);
+      console.log(p.id);
+      console.log(id);
+      console.log(p.id === id);
       return p.id === id;
     });
+
+    // console.log(personIndex);
+    // console.log(id);
+
     // more modern approach than Object.assign()
     const person = { ...this.state.persons[personIndex] }; //index fetched above
+    // console.log(person);
     // const person = Object.assign({}, this.state.persons[personIndex]);
-    // console.log(event);
     person.name = event.target.value;
 
     const persons = [...this.state.persons];
     persons[personIndex] = person;
+    // console.log(person);
     this.setState({ persons: persons });
+    console.log(this.state.persons);
     // this.setState({
     //   persons: [
     //     { name: "Dimitar", age: "40" },
@@ -99,14 +110,17 @@ class AppClass extends Component {
           {this.state.persons.map((person, index) => {
             // console.log(index + " - " + person.name);
             return (
+              // the "key" always should be on outher element in map method!
+              // <ErrorBoundary key={person.id}>
               <Person
-                key={person.id}
+                // key={person.id}
                 name={person.name}
                 age={person.age}
                 clickdel={() => this.deletePersonHandler(index)}
                 // changed={this.nameChangedHandler}
                 changed={event => this.nameChangedHandler(event, person.id)}
               />
+              // </ErrorBoundary>
             );
           })}
         </div>
@@ -119,19 +133,19 @@ class AppClass extends Component {
       };
     }
 
-    // let classes = ["red", "bold"].join(" "); //"red bold"
-    let classes = [];
+    // let assignedClasses = ["red", "bold"].join(" "); //"red bold"
+    let assignedClasses = [];
     if (this.state.persons.length <= 2) {
-      classes.push("red"); // classes = ['red']
+      assignedClasses.push("red"); // assignedClasses = ['red']
     }
     if (this.state.persons.length <= 1) {
-      classes.push("bold"); // classes = ['red', 'bold']
+      assignedClasses.push("bold"); // assignedClasses = ['red', 'bold']
     }
     return (
       // <StyleRoot>
       <div className="App">
         <h1>Hi I'm a React App</h1>
-        <p /*className={classes}*/ className={classes.join(" ")}>
+        <p /*className={classes}*/ className={assignedClasses.join(" ")}>
           Thi is really working
         </p>
         {/* inline function is convinient way for passing args(syntax) also without bind
@@ -144,7 +158,7 @@ class AppClass extends Component {
         {/* <button style={style} onClick={this.switchNameHandler}>Switch Name</button> */}
 
         <button
-          className="button"
+          className={this.state.showPersons ? "buttonRed" : "buttonGreen"}
           // style={style}
           // onClick={this.switchNameHandler.bind(this, "Dimitar", "40")}
           onClick={this.togglePersonsHandler}

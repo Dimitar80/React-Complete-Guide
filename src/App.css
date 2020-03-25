@@ -33,7 +33,7 @@ h3 {
   font-size: 20px;
 }
 
-.button {
+.buttonGreen {
   font: inherit;
   border: 1px solid blue;
   border-radius: 5px;
@@ -43,8 +43,22 @@ h3 {
   cursor: pointer;
 }
 
-.button:hover {
+.buttonGreen:hover {
   background-color: lightgreen;
+  color: black;
+}
+.buttonRed {
+  font: inherit;
+  border: 1px solid blue;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.buttonRed:hover {
+  background-color: salmon;
   color: black;
 }
 /* .App-logo {
