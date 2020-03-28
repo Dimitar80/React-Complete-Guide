@@ -1,0 +1,36 @@
+.Cockpit .red {
+  color: red;
+}
+.Cockpit .bold {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.Cockpit .buttonGreen {
+  font: inherit;
+  border: 1px solid blue;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.Cockpit .buttonGreen:hover {
+  background-color: lightgreen;
+  color: black;
+}
+.Cockpit .buttonRed {
+  font: inherit;
+  border: 1px solid blue;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.Cockpit .buttonRed:hover {
+  background-color: salmon;
+  color: black;
+}

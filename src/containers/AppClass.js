@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 // import Radium, { StyleRoot } from "radium";
 // import styled from "styled-components";
-import Person from "./Person/Person";
+import Person from "../components/Persons/Person/Person";
 // import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
 // const StyledButton = styled.button`
@@ -113,13 +113,17 @@ class AppClass extends Component {
               // the "key" always should be on outher element in map method!
               // <ErrorBoundary key={person.id}>
               <Person
-                // key={person.id}
+                // attributes for pass-ing as Components props
+                key={person.id}
                 name={person.name}
                 age={person.age}
                 clickdel={() => this.deletePersonHandler(index)}
                 // changed={this.nameChangedHandler}
                 changed={event => this.nameChangedHandler(event, person.id)}
               />
+              /* {" "}
+                children
+              </Person> */
               // </ErrorBoundary>
             );
           })}

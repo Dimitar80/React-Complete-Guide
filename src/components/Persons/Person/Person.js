@@ -22,7 +22,7 @@ import "./Person.css";
 const person = (props, pop) => {
   //   console.log(props);
   const style = {
-    "@media (min-width: 500px)": {
+    "@media (minidth: 500px)": {
       width: "450px"
     }
   };
@@ -44,7 +44,7 @@ const person = (props, pop) => {
             cursor: "pointer",
             fontWeight: "bold"
           }}
-          onClick={props.clickdel}
+          onClick={props.clickDel}
         >
           X
         </span>
@@ -53,8 +53,8 @@ const person = (props, pop) => {
         {/*{Math.floor(Math.random() * 30)}*/}{" "}
         <span style={{ color: "red" }}>{props.age} </span>old.
       </p>
-      <p style={{ color: "red" }}>{props.children}</p>
-      <input type="text" onChange={props.changed} value={props.name} />
+      <p style={{ color: "purple" }}>{props.children}</p>
+      <input type="text" onChange={props.changedName} value={props.name} />
     </div>
     /* </StyledDiv> */
   );
