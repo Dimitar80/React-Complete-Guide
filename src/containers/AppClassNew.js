@@ -1,19 +1,42 @@
 import React, { Component } from "react";
 import "./App.css";
 
-import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
+import PersonsClass from "../components/Persons/PersonsClass";
+// import WithClass from "./hoc/WithClass";
+import withClass from "./hoc/withClass";
+import Aux from "./hoc/Auxiliary";
+import AuthContext from "../context/auth-context";
 
 class AppClassNew extends Component {
+  constructor(props) {
+    super(props);
+    console.log("[AppClassNew.js] constructor");
+  }
   state = {
     persons: [
-      { id: "rtb", name: "Maximilian", age: "28" },
-      { id: "hfdn", name: "Manu", age: "21" },
-      { id: "nfegt", name: "Steph", age: "31" }
+      { id: "rtb", name: "Maximilian", age: 28 },
+      { id: "hfdn", name: "Manu", age: 21 },
+      { id: "nfegt", name: "Steph", age: 31 }
     ],
     otherState: "some other value",
-    showPersons: false
+    showPersons: false,
+    showCockpit: true,
+    changeCounter: 0,
+    authenticated: false
   };
+
+  static getDerivedStateFromProps(props, state) {
+    console.log("[AppClassNew.js] getDerivedStateFromProps", props /*state*/);
+    return state;
+  }
+
+  // componentWillMount() {
+  //   console.log("[AppClassNew.js] componentDiWillMount");
+  // }
+  componentDidMount() {
+    console.log("[AppClassNew.js] componentDidMount");
+  }
 
   // switchNameHandler = (newName, newAge) => {
   //   // console.log("Was clciked");
@@ -45,7 +68,21 @@ class AppClassNew extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
     // console.log(person);
-    this.setState({ persons: persons });
+
+    // this.setState({
+    //   persons: persons,
+    //   changeCounter: this.state.changeCounter + 1
+    // });
+
+    // When you doing state updates that don't depend on oldstate is fine to pass/use only object!
+    // Beacuse setState is asyncronous operation of calls
+    // better way of setState when you depending on the old states optional syntax is with receiving
+    // two arguments using an anonymous arrow function, where first arg is old state (prevState, props)
+    // and second argument is current props if we need those!, than function body where we return
+    // new state object! prevState guaranties the actual previous state!
+    this.setState((prevState, props) => {
+      return { persons: persons, changeCounter: prevState.changeCounter + 1 };
+    });
     console.log(this.state.persons);
     // this.setState({
     //   persons: [
@@ -72,7 +109,12 @@ class AppClassNew extends Component {
     this.setState({ showPersons: !this.state.showPersons });
   };
 
+  loginHandler = () => {
+    this.setState({ authenticated: true });
+  };
+
   render() {
+    console.log("[AppClassNew.js] render");
     // const style = {
     //   font: "inherit",
     //   border: "1px solid blue",
@@ -90,10 +132,11 @@ class AppClassNew extends Component {
     let persons = null;
     if (this.state.showPersons) {
       persons = (
-        <Persons
+        <PersonsClass
           persons={this.state.persons}
           clickdel={this.deletePersonHandler}
           changedInputName={this.nameChangedHandler}
+          isAuthenticated={this.state.authenticated}
           // clickdel={() => this.deletePersonHandler(index)}
           // changed={event => this.nameChangedHandler(event, person.id)}
         />
@@ -108,16 +151,49 @@ class AppClassNew extends Component {
     }
 
     return (
-      <div className="App">
-        <Cockpit
-          title={this.props.appTitle}
-          persons={this.state.persons}
-          clicked={this.togglePersonsHandler}
-          personsState={this.state.showPersons}
-        />
-        {persons}
-      </div>
+      // <div className="App">
+      // <WithClass classes="App">
+      <Aux>
+        <button
+          style={{ margin: "20px auto 20px" }}
+          onClick={() => {
+            this.setState({ showCockpit: false });
+          }}
+        >
+          Remove Cockpit
+        </button>
+        {/* Only parts of this parrent component who would need access(are concerned) to the context
+         should be wrapped with this context component!!! */}
+
+        {/* Outer curly braces for dynamic content, inner curly braces for JS constructor object! */}
+
+        {/* Props and state change cause rerender cycle, so only changing something in the context object
+        would not cause a rerender cycle   */}
+        <AuthContext.Provider
+          // In value - context object is placed!
+          value={{
+            authenticated: this.state.authenticated,
+            login: this.loginHandler
+          }}
+        >
+          {this.state.showCockpit ? (
+            <Cockpit
+              title={this.props.appTitle}
+              // persons={this.state.persons}
+              personsLength={this.state.persons.length}
+              clicked={this.togglePersonsHandler}
+              personsState={this.state.showPersons}
+              login={this.loginHandler}
+            />
+          ) : null}
+          {persons}
+        </AuthContext.Provider>
+      </Aux>
+      /* </WithClass> */
+      /* </div> */
     );
   }
 }
-export default AppClassNew;
+
+export default withClass(AppClassNew, "App");
+// export default AppClassNew;

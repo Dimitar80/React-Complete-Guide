@@ -32,6 +32,7 @@ const person = (props, pop) => {
   //   throw new Error("Somethingwent wrong!");
   // }
   // console.log(rnd);
+  console.log("[Person.js] rendering...");
   return (
     <div className="Person" style={style}>
       {/* <StyledDiv> */}

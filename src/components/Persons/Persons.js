@@ -1,11 +1,12 @@
 import React from "react";
-import Person from "./Person/Person";
+import PersonClass from "./Person/PersonClass";
 
-const persons = props =>
-  props.persons.map((person, index) => {
+const persons = props => {
+  console.log("[Persons.js] rendering...");
+  return props.persons.map((person, index) => {
     // console.log(index + " - " + person.name);
     return (
-      <Person
+      <PersonClass
         // attributes for pass-ing as Components props
         key={person.id}
         name={person.name}
@@ -19,8 +20,9 @@ const persons = props =>
         This is{" "}
         <span style={{ fontWeight: 900, fontSize: "20px" }}> "Child" </span> of
         a/in Components
-      </Person>
+      </PersonClass>
     );
   });
+};
 
 export default persons;
